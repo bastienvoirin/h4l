@@ -15,7 +15,7 @@ ak = maybe_import("awkward")
             f"Electron.{var}"
             for var in {
                 "pt", "eta", "phi", "deltaEtaSC",
-                "dxy", "dz", "sip3d",
+                "dxy", "dz", "sip3d", "mass", "charge",
             }
         } | {
             IF_NANO_V9("Electron.mvaFall17V2Iso"),
@@ -109,7 +109,7 @@ def electron_selection(
     uses=({
         f"Muon.{var}" for var in [
             # four momenta information
-            "pt", "eta", "phi", "mass",
+            "pt", "eta", "phi", "mass", "charge",
             # quality criteria
             "isGlobal", "isStandalone", "isTracker", "nStations", "nTrackerLayers",
             # impact parameters
