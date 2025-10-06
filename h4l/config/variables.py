@@ -110,3 +110,15 @@ def add_variables(config: od.Config) -> None:
         binning=(40, 0.0, 1.0),
         x_title=r"Electron ID BDT",
     )
+
+    # TODO #
+    # Task 3.
+    # Add the following observables:
+    # 1. Number of electrons in event
+    # 2. Number of muons in event
+    # 3. Mass of 4l system in 118, 130 GeV
+    # (define a new observable called m4l_zoomed)
+    # 4. Mass of Z1 boson
+    # 5. Mass of Z2 boson
+    # Hint: for some of these you can defined them directly here
+    # Hint: some others need some modification/extension of production/default.py

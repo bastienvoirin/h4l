@@ -30,7 +30,7 @@ def electron_selection(
     events: ak.Array,
     **kwargs,
 ):
-    min_pt = 15
+    min_pt = 7
     pt = events.Electron.pt
     fSCeta = abs(events.Electron.eta + events.Electron.deltaEtaSC)
 
@@ -127,7 +127,7 @@ def muon_selection(
     events: ak.Array,
     **kwargs,
 ) -> tuple[ak.Array, SelectionResult]:
-    min_pt = 15
+    min_pt = 5
     max_eta = 2.4
     selected_muon_mask = (
         # Global or Tracker Muon

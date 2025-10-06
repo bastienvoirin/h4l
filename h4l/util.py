@@ -27,6 +27,38 @@ coffea = maybe_import("coffea")
 
 _logger = law.logger.get_logger(__name__)
 
+def build_2e2mu(muons_plus, muons_minus, electrons_plus, electrons_minus):
+    mu1, mu2, e1, e2 = ak.unzip(
+        ak.cartesian([muons_plus, muons_minus, electrons_plus, electrons_minus])
+    )
+    z_mu = mu1 + mu2
+    z_e  = e1 + e2
+    is_mu_closer = abs(z_mu.mass - 91.1876) < abs(z_e.mass - 91.1876)
+    z1 = ak.where(is_mu_closer, z_mu, z_e)
+    z2 = ak.where(is_mu_closer, z_e, z_mu)
+    zz = z1 + z2
+    return ak.zip({"z1": z1, "z2": z2, "zz": zz}, depth_limit=1)
+
+# TODO #
+# Task 2.
+# Add ZZ selection following the official HZZ one
+# Task 3.
+# Define ZZ, Z1, Z2 observables and plot them
+# Hint: Use the above to create Z1, Z2, ZZ candidates for 2e2mu
+# Now write the one for the 4e and 4mu channels.
+# The skeleton is:
+# def build_4sf(leptons_plus, leptons_minus):
+#    lepplus1, lepplus2 = ak.unzip(ak.combinations(leptons_plus, 2))
+#    lepminus1, lepminus2 = ak.unzip(ak.combinations(leptons_minus, 2))
+#    ...
+#    ... DO ALL THE PAIRS ...
+#    ... BUILD ALL Zs ...
+#    ... FIND Z1: closest to true Z ...
+#    ... FIND Z2 ...
+#    ... DON'T FORGET TO LOOK AT ALL POSSIBILITIES ...
+#    ...
+#    return ak.zip({"z1": z1, "z2": z2, "zz": zz}, depth_limit=1)
+
 
 def masked_sorted_indices(mask: ak.Array, sort_var: ak.Array, ascending: bool = False) -> ak.Array:
   """

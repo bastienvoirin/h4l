@@ -68,7 +68,7 @@ def add_lepton_categories(config: od.Config) -> None:
       label="4 Electrons",
     )
     
-    # TODO:
-    # Task:
-    # Define additional categories
-    # 4mu and 2e2mu (or 2e2mu and 2mu2e)
+# TODO #
+# Task 1.
+# Define categories for 4mu and 2e2mu
+# Hint: modify also categorization/default.py

@@ -247,8 +247,14 @@ def add_das_config(
     # default objects, such as calibrator, selector, producer, ml model, inference model, etc
     cfg.x.default_calibrator = "example" # TODO: Do we need any calibration?
     cfg.x.default_selector = "default"
+    # TODO #
+    # Task 2.
+    # Expand selection to use HZZ4L official one
+    # Hint: Add here additional selector_steps
+    # Hint: Modify selection/default.py
     cfg.x.default_selector_steps = ("trigger", "four_leptons")
     cfg.x.default_producer = "default"
+    cfg.x.default_hist_producer = "cf_default"
     cfg.x.default_ml_model = None
     cfg.x.default_inference_model = None
     cfg.x.default_categories = ("cat_incl",)
@@ -276,6 +282,11 @@ def add_das_config(
 
     # selector step groups for conveniently looping over certain steps
     # (used in cutflow tasks)
+    # TODO #
+    # Task 2.
+    # Expand selection to use HZZ4L official one
+    # Hint: Add here additional selector_steps
+    # Hint: Modify selection/default.py
     cfg.x.selector_step_groups = {
         "default": ["trigger", "four_leptons"],
     }
@@ -359,6 +370,12 @@ def add_das_config(
     cfg.add_shift(name="mu_up", id=10, type="shape")
     cfg.add_shift(name="mu_down", id=11, type="shape")
     add_shift_aliases(cfg, "mu", {"muon_weight": "muon_weight_{direction}"})
+    # TODO #
+    # Task 1.1
+    # Add Electron SFs
+    # Hint: modify event_weights below
+    # Hint: modify production/default.py
+
 
     cfg.add_shift(name="murmuf_up", id=140, type="shape")
     cfg.add_shift(name="murmuf_down", id=141, type="shape")
@@ -472,7 +489,7 @@ def add_das_config(
             "PV.npvs",
             # columns added during selection
             "deterministic_seed", "process_id", "mc_weight", "cutflow.*",
-            "channel_id", "category_ids", "mc_weight", "pdf_weight*", "murmuf_weight*",
+            "category_ids", "mc_weight", "pdf_weight*", "murmuf_weight*",
             "leptons_os", "single_triggered", "cross_triggered",
             "pu_weight*",
         } | {
@@ -500,6 +517,11 @@ def add_das_config(
     # event weight columns as keys in an OrderedDict, mapped to shift instances they depend on
     # TODO: Add weights
     get_shifts = partial(get_shifts_from_sources, cfg)
+    # TODO #
+    # Task 1.1
+    # Add Electron SFs
+    # Hint: modify cfg L370
+    # Hint: modify production/default.py
     cfg.x.event_weights = DotDict({
         "normalization_weight": [],
         "muon_weight": get_shifts("mu"),
@@ -512,12 +534,6 @@ def add_das_config(
         # "cf.SelectEvents": (lambda cls, inst, params: "prod1" if params.get("selector") == "default" else "dev1"),
         # ...
     }
-
-    # channels
-    # (just one for now)
-    cfg.add_channel(name="4mu", id=1)
-    cfg.add_channel(name="4e", id=2)
-    cfg.add_channel(name="2e2mu", id=3)
 
     add_variables(cfg)
     add_all_categories(cfg)

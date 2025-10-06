@@ -6,6 +6,12 @@ from columnflow.util import maybe_import
 from columnflow.columnar_util import EMPTY_FLOAT, set_ak_column
 from columnflow.production.util import attach_coffea_behavior
 
+# Task 3.
+# Produce variables for ZZ, Z1, Z2
+# Hint: import the following
+# First you need to define build_4sf in util.py
+# from h4l.util import build_2e2mu, build_4sf
+
 np = maybe_import("numpy")
 ak = maybe_import("awkward")
 
@@ -44,6 +50,13 @@ def four_lep_invariant_mass(self: Producer, events: ak.Array, **kwargs) -> ak.Ar
     dimuon = events.Muon[:, :4].sum(axis=1)
 
     # sum the results to form the four-lepton four-vector
+    # TODO # 
+    # Task 3.
+    # Produce variables for ZZ, Z1, Z2
+    # Hint: drop the fourlep and do the correct definition
+    # Hint: Build 2e2mu, 4e, 4mu separately and then
+    # Hint: zz_inclusive = ak.concatenate([zz_2e2mu, zz_4e, zz_4mu], axis=1)
+    # Hint: ak.firsts(zz_inclusive.zz.mass) could be useful
     fourlep = dielectron + dimuon
 
     # total number of leptons per event

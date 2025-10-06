@@ -19,6 +19,16 @@ from columnflow.production.processes import process_ids
 from h4l.selection.lepton import electron_selection, muon_selection
 from h4l.selection.trigger import trigger_selection
 
+# Task 2.
+# Implement official HZZ Selection
+# All Z candidates must have 12 < mll < 120 GeV
+# The Z1 candidate must have mZ1 > 40 GeV
+# The ZZ candidate must have mZZ > 70 GeV
+# Bonus: Leading lepton must have pT > 20 GeV, subleading pT > 10 GeV
+# Hint: import the following
+# First you need to define build_4sf in util.py
+# from h4l.util import build_2e2mu, build_4sf
+
 np = maybe_import("numpy")
 ak = maybe_import("awkward")
 
@@ -81,12 +91,23 @@ def default(
     ele_idx = results.objects.Electron.Electron
     muon_idx = results.objects.Muon.Muon
 
+    # select leptons
+    electrons = events.Electron[ele_idx]
+    muons = events.Muon[muon_idx]
+
     # count selected leptons
-    n_ele = ak.num(events.Electron[ele_idx], axis=1)
-    n_muon = ak.num(events.Muon[muon_idx], axis=1)
+    n_ele = ak.num(electrons, axis=1)
+    n_muon = ak.num(muons, axis=1)
 
     # select events with at least four selected leptons
     results.steps["four_leptons"] = (n_ele + n_muon) >= 4
+
+    # Task 2.
+    # Implement official HZZ Selection
+    # All Z candidates must have 12 < mll < 120 GeV
+    # The Z1 candidate must have mZ1 > 40 GeV
+    # The ZZ candidate must have mZZ > 70 GeV
+    # Bonus: Leading lepton must have pT > 20 GeV, subleading pT > 10 GeV
 
     # post selection build process IDs
     events = self[process_ids](events, **kwargs)
