@@ -18,8 +18,8 @@ from columnflow.columnar_util import set_ak_column
 # Add electrons and muons SFs
 # Start by uncommenting these lines and
 # add electron_weights, muon_weights below to uses and produces:
-# from columnflow.production.cms.electron import electron_weights
-# from columnflow.production.cms.muon import muon_weights
+from columnflow.production.cms.electron import electron_weights
+from columnflow.production.cms.muon import muon_weights
 
 
 from h4l.production.invariant_mass import four_lep_invariant_mass
@@ -38,6 +38,8 @@ set_ak_column_f32 = functools.partial(set_ak_column, value_type=np.float32)
         deterministic_seeds,
         category_ids, normalization_weights,
         four_lep_invariant_mass,
+        electron_weights,
+        muon_weights,
         "process_id",
     },
     produces={
@@ -45,6 +47,8 @@ set_ak_column_f32 = functools.partial(set_ak_column, value_type=np.float32)
         deterministic_seeds,
         category_ids, normalization_weights,
         four_lep_invariant_mass,
+        electron_weights,
+        muon_weights,
         "process_id"
     }
 )
@@ -54,6 +58,8 @@ def default(self: Producer, events: ak.Array, **kwargs) -> ak.Array:
 
     # deterministic seeds
     events = self[deterministic_seeds](events, **kwargs)
+
+    events = self[four_lep_invariant_mass](events, **kwargs)
 
     if self.dataset_inst.is_mc:
         # normalization weights
@@ -70,17 +76,26 @@ def default(self: Producer, events: ak.Array, **kwargs) -> ak.Array:
         # as those events where only leptons with pT > 15 GeV are saved
         # Hint: use the ak.with_field() method
         # Hint: the following gives you a skeleton on top of which to build
-        # high_pt_mask = ... # define mask for electrons
-        # events_high_pt = ak.with_field(...)
-        # events_high_pt = self[electron_weights](events_high_pt, **kwargs)
-        # for postfix in ["", "_up", "_down"]:
-        #     colname = f"{electron_weights.weight_name}{postfix}"
-        #     if hasattr(events_high_pt, colname):
-        #         sf_ele = getattr(events_high_pt, colname)
-        #         events = set_ak_column(events, colname, sf_ele, value_type=np.float32)
+        el_high_pt_mask = events.Electron.pt > 15 # define mask for electrons
+        events_el_high_pt = ak.with_field(events, events.Electron[el_high_pt_mask], "Electron")
+        events_el_high_pt = self[electron_weights](events_el_high_pt, **kwargs)
+        for postfix in ["", "_up", "_down"]:
+            colname = f"{electron_weights.weight_name}{postfix}"
+            if hasattr(events_el_high_pt, colname):
+                sf_ele = getattr(events_el_high_pt, colname)
+                events = set_ak_column(events, colname, sf_ele, value_type=np.float32)
         # Now repeat for muons
-
-    events = self[four_lep_invariant_mass](events, **kwargs)
+        mu_high_pt_mask = events.Muon.pt > 15 # define mask for electrons
+        events_mu_high_pt = ak.with_field(events, events.Muon[mu_high_pt_mask], "Muon")
+        events_mu_high_pt = self[muon_weights](events_mu_high_pt, **kwargs)
+        for postfix in ["", "_up", "_down"]:
+           colname = f"{muon_weights.weight_name}{postfix}"
+           if hasattr(events_mu_high_pt, colname):
+               sf_muo = getattr(events_mu_high_pt, colname)
+               events = set_ak_column(events, colname, sf_muo, value_type=np.float32)
+        # Apply the electron and muon SFs
+        events = self[electron_weights](events_el_high_pt, **kwargs)
+        events = self[muon_weights](events_mu_high_pt, **kwargs)
 
     return events
 
