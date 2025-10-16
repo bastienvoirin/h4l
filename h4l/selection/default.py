@@ -126,6 +126,8 @@ def default(
     results.steps["m_z1"] = ak.any(z1.mass > 40, axis=1)
     results.steps["m_zz"] = ak.any(zz.mass > 70, axis=1)
 
+    results.steps["h_window"] = ak.any((zz.mass > 105) & (zz.mass < 140), axis=1)
+
     # post selection build process IDs
     events = self[process_ids](events, **kwargs)
 

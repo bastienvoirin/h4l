@@ -115,10 +115,66 @@ def add_variables(config: od.Config) -> None:
     # Task 3.
     # Add the following observables:
     # 1. Number of electrons in event
+    config.add_variable(
+        name="n_electron",
+        expression=lambda events: ak.num(events.Electron["pt"], axis=1),
+        aux={"inputs": {"Electron.pt"}},
+        binning=(7, -0.5, 7.5),
+        x_title="Number of electrons",
+        discrete_x=True,
+    )
     # 2. Number of muons in event
+    config.add_variable(
+        name="n_muon",
+        expression=lambda events: ak.num(events.Muon["pt"], axis=1),
+        aux={"inputs": {"Muon.pt"}},
+        binning=(7, -0.5, 7.5),
+        x_title="Number of muons",
+        discrete_x=True,
+    )
     # 3. Mass of 4l system in 118, 130 GeV
+    config.add_variable(
+        name="m4l_zoomed",
+        expression="m4l",
+        null_value = EMPTY_FLOAT,
+        binning=(48.0, 118.0, 130.0),
+        unit="GeV",
+        x_title=r"$m_{4\ell}$ (zoomed)",
+    )
     # (define a new observable called m4l_zoomed)
     # 4. Mass of Z1 boson
+    config.add_variable(
+        name="mz1",
+        expression="mz1",
+        null_value=EMPTY_FLOAT,
+        binning=(100, 0.0, 200.0),
+        unit="GeV",
+        x_title=r"$m_{Z_1}$",
+    )
     # 5. Mass of Z2 boson
+    config.add_variable(
+        name="mz2",
+        expression="mz2",
+        null_value=EMPTY_FLOAT,
+        binning=(100, 0.0, 200.0),
+        unit="GeV",
+        x_title=r"$m_{Z_2}$",
+    )
     # Hint: for some of these you can defined them directly here
     # Hint: some others need some modification/extension of production/default.py
+    config.add_variable(
+        name="mzz",
+        expression="mzz",
+        null_value=EMPTY_FLOAT,
+        binning=(100, 0.0, 200.0),
+        unit="GeV",
+        x_title=r"$m_{ZZ}$",
+    )
+    config.add_variable(
+        name="mzz_zoomed",
+        expression="mzz",
+        null_value = EMPTY_FLOAT,
+        binning=(48.0, 118.0, 130.0),
+        unit="GeV",
+        x_title=r"$m_{ZZ}$ (zoomed)",
+    )
