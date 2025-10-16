@@ -134,6 +134,31 @@ def add_das_config(
             "color2": "#555555",
             "label": r"gg $\rightarrow$ H $\rightarrow$ 4$\ell$",
         },
+        "h_vbf_4l": {
+            "color1": "#e77d79",
+            "color2": "#555555",
+            "label": r"qq $\rightarrow$ H $\rightarrow$ 4$\ell$",
+        },
+        "wph_4l": {
+            "color1": "#ce615b",
+            "color2": "#555555",
+            "label": r"qq $\rightarrow$ W$^{+}$H $\rightarrow$ 4$\ell$",
+        },
+        "wmh_4l": {
+            "color1": "#b5453d",
+            "color2": "#555555",
+            "label": r"qq $\rightarrow$ W$^{-}$H $\rightarrow$ 4$\ell$",
+        },
+        "zh_4l": {
+            "color1": "#9b2820",
+            "color2": "#555555",
+            "label": r"qq $\rightarrow$ ZH $\rightarrow$ 4$\ell$",
+        },
+        "tth_4l": {
+            "color1": "#800000",
+            "color2": "#555555",
+            "label": r"tt $\rightarrow$ H $\rightarrow$ 4$\ell$",
+        },
         # backgrounds
         "zz_llll": {
             "color1": "#99ccff",
