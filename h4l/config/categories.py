@@ -67,6 +67,18 @@ def add_lepton_categories(config: od.Config) -> None:
       selection="catid_4e",
       label="4 Electrons",
     )
+    cat_2e2mu = config.add_category(  # noqa
+      name="2e2mu",
+      id=11,
+      selection="catid_2e2mu",
+      label="2 Electrons 2 Muons",
+    )
+    cat_4mu = config.add_category(  # noqa
+      name="4mu",
+      id=12,
+      selection="catid_4mu",
+      label="4 Muons",
+    )
     
 # TODO #
 # Task 1.
