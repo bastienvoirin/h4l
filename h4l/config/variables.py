@@ -119,7 +119,7 @@ def add_variables(config: od.Config) -> None:
         name="n_electron",
         expression=lambda events: ak.num(events.Electron["pt"], axis=1),
         aux={"inputs": {"Electron.pt"}},
-        binning=(7, -0.5, 7.5),
+        binning=(9, -0.5, 9.5),
         x_title="Number of electrons",
         discrete_x=True,
     )
@@ -128,7 +128,7 @@ def add_variables(config: od.Config) -> None:
         name="n_muon",
         expression=lambda events: ak.num(events.Muon["pt"], axis=1),
         aux={"inputs": {"Muon.pt"}},
-        binning=(7, -0.5, 7.5),
+        binning=(9, -0.5, 9.5),
         x_title="Number of muons",
         discrete_x=True,
     )
@@ -137,7 +137,7 @@ def add_variables(config: od.Config) -> None:
         name="m4l_zoomed",
         expression="m4l",
         null_value = EMPTY_FLOAT,
-        binning=(48.0, 118.0, 130.0),
+        binning=(50.0, 100.0, 150.0),
         unit="GeV",
         x_title=r"$m_{4\ell}$ (zoomed)",
     )
@@ -166,7 +166,7 @@ def add_variables(config: od.Config) -> None:
         name="mzz",
         expression="mzz",
         null_value=EMPTY_FLOAT,
-        binning=(100, 0.0, 200.0),
+        binning=(100, 50.0, 250.0),
         unit="GeV",
         x_title=r"$m_{ZZ}$",
     )
@@ -174,7 +174,7 @@ def add_variables(config: od.Config) -> None:
         name="mzz_zoomed",
         expression="mzz",
         null_value = EMPTY_FLOAT,
-        binning=(48.0, 118.0, 130.0),
+        binning=(50.0, 100.0, 150.0),
         unit="GeV",
         x_title=r"$m_{ZZ}$ (zoomed)",
     )
