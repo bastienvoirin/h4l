@@ -163,12 +163,12 @@ def add_das_config(
         "zz_llll": {
             "color1": "#99ccff",
             "color2": "#555555",
-            "label": r"$q\overline{q}\rightarrow{ZZ}$, Z$\gamma^{*}$",
+            "label": r"$q\overline{q}$ $\rightarrow$ ZZ, Z$\gamma^{*}$",
         },
         "ggf": {
             "color1": "#4b78ff",
             "color2": "#555555",
-            "label": r"${gg}\rightarrow{ZZ}$, Z$\gamma^{*}$",
+            "label": r"gg $\rightarrow$ ZZ, Z$\gamma^{*}$",
         },
         # TODO: dy, wz, tt (color: #669966, label: Z+X)
     }
