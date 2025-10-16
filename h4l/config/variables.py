@@ -95,7 +95,7 @@ def add_variables(config: od.Config) -> None:
         null_value=EMPTY_FLOAT,
         binning=(100, 0, 200.0),
         unit="GeV",
-        x_title=r"$m_{4l}$",
+        x_title=r"$m_{4\ell}$",
     )
     config.add_variable(
         name="electron_pt",
