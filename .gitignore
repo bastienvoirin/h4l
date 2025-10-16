@@ -39,3 +39,4 @@ data
 .__afs*
 *.pickle
 *.tgz
+!plots*/*
