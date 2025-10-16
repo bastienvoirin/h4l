@@ -47,8 +47,9 @@ law run cf.PlotVariables1D \
  --categories 4e,2e2mu,4mu \
  --hist-producer all_weights \
  --workers 16 \
- --variables m4l,mzz,mz1,mz2,num_electrons,num_muons \
+ --variables m4l,mzz,mz1,mz2,m4l_zoomed,mzz_zoomed,n_electron,n_muon \
  --cms-label simpw
+ --skip-ratio
 ```
 
 ```sh
