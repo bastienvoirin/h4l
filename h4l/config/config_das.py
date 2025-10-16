@@ -252,7 +252,7 @@ def add_das_config(
     # Expand selection to use HZZ4L official one
     # Hint: Add here additional selector_steps
     # Hint: Modify selection/default.py
-    cfg.x.default_selector_steps = ("trigger", "four_leptons")
+    cfg.x.default_selector_steps = ("trigger", "four_leptons", "m_z", "m_z1", "m_zz")
     cfg.x.default_producer = "default"
     cfg.x.default_hist_producer = "cf_default"
     cfg.x.default_ml_model = None
@@ -288,7 +288,7 @@ def add_das_config(
     # Hint: Add here additional selector_steps
     # Hint: Modify selection/default.py
     cfg.x.selector_step_groups = {
-        "default": ["trigger", "four_leptons"],
+        "default": ["trigger", "four_leptons", "m_z", "m_z1", "m_zz"],
     }
 
     # selector step labels (for cutflow plots)

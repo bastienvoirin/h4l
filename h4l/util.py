@@ -47,17 +47,35 @@ def build_2e2mu(muons_plus, muons_minus, electrons_plus, electrons_minus):
 # Hint: Use the above to create Z1, Z2, ZZ candidates for 2e2mu
 # Now write the one for the 4e and 4mu channels.
 # The skeleton is:
-# def build_4sf(leptons_plus, leptons_minus):
-#    lepplus1, lepplus2 = ak.unzip(ak.combinations(leptons_plus, 2))
-#    lepminus1, lepminus2 = ak.unzip(ak.combinations(leptons_minus, 2))
-#    ...
-#    ... DO ALL THE PAIRS ...
-#    ... BUILD ALL Zs ...
-#    ... FIND Z1: closest to true Z ...
-#    ... FIND Z2 ...
-#    ... DON'T FORGET TO LOOK AT ALL POSSIBILITIES ...
-#    ...
-#    return ak.zip({"z1": z1, "z2": z2, "zz": zz}, depth_limit=1)
+def build_4sf(leptons_plus, leptons_minus):
+  lp1, lp2 = ak.unzip(ak.combinations(leptons_plus, 2))
+  lm1, lm2 = ak.unzip(ak.combinations(leptons_minus, 2))
+
+  lp11, lm11 = ak.unzip(ak.cartesian([lp1, lm1]))
+  lp12, lm12 = ak.unzip(ak.cartesian([lp1, lm2]))
+  lp21, lm21 = ak.unzip(ak.cartesian([lp2, lm1]))
+  lp22, lm22 = ak.unzip(ak.cartesian([lp2, lm2]))
+
+  z11 = lp11 + lm11
+  z12 = lp12 + lm12
+  z22 = lp22 + lm22
+  z21 = lp21 + lm21
+
+  cond1 = abs(z11.mass - 91.1876) < abs(z12.mass - 91.1876)
+  z1cand = ak.where(cond1, z11, z12)
+  z2cand = ak.where(cond1, z22, z21)
+
+  cond2 = abs(z1cand.mass - 91.1876) < abs(z21.mass - 91.1876)
+  z1cand = ak.where(cond2, z1cand, z21)
+  z2cand = ak.where(cond2, z2cand, z12)
+
+  cond3 = abs(z1cand.mass - 91.1876) < abs(z22.mass - 91.1876)
+  z1 = ak.where(cond3, z1cand, z22)
+  z2 = ak.where(cond3, z2cand, z11)
+
+  zz = z1 + z2
+
+  return ak.zip({"z1": z1, "z2": z2, "zz": zz}, depth_limit=1)
 
 
 def masked_sorted_indices(mask: ak.Array, sort_var: ak.Array, ascending: bool = False) -> ak.Array:

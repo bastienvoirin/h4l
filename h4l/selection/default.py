@@ -27,7 +27,7 @@ from h4l.selection.trigger import trigger_selection
 # Bonus: Leading lepton must have pT > 20 GeV, subleading pT > 10 GeV
 # Hint: import the following
 # First you need to define build_4sf in util.py
-# from h4l.util import build_2e2mu, build_4sf
+from h4l.util import build_2e2mu, build_4sf
 
 np = maybe_import("numpy")
 ak = maybe_import("awkward")
@@ -108,6 +108,23 @@ def default(
     # The Z1 candidate must have mZ1 > 40 GeV
     # The ZZ candidate must have mZZ > 70 GeV
     # Bonus: Leading lepton must have pT > 20 GeV, subleading pT > 10 GeV
+
+    electrons_plus = electrons[electrons.charge > 0]
+    electrons_minus = electrons[electrons.charge < 0]
+    muons_plus = muons[muons.charge > 0]
+    muons_minus = muons[muons.charge < 0]
+
+    el2mu2 = build_2e2mu(muons_plus, muons_minus, electrons_plus, electrons_minus)
+    el4 = build_4sf(electrons_plus, electrons_minus)
+    mu4 = build_4sf(muons_plus, muons_minus)
+
+    z1 = ak.concatenate([el2mu2.z1, el4.z1, mu4.z1], axis=1)
+    z2 = ak.concatenate([el2mu2.z2, el4.z2, mu4.z2], axis=1)
+    zz = ak.concatenate([el2mu2.zz, el4.zz, mu4.zz], axis=1)
+
+    results.steps["m_z"] = ak.any((12 < z1.mass) & (z1.mass < 120) & (12 < z2.mass) & (z2.mass < 120), axis=1)
+    results.steps["m_z1"] = ak.any(z1.mass > 40, axis=1)
+    results.steps["m_zz"] = ak.any(zz.mass > 70, axis=1)
 
     # post selection build process IDs
     events = self[process_ids](events, **kwargs)
